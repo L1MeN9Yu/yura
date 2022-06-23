@@ -1,7 +1,10 @@
 syntax = "proto3";
-package user;
+package top.l1men9yu.yura;
 
-import "base.proto";
+message Reply {
+  int64 code = 1;
+  optional string message = 2;
+}
 
 message RegisterRequest {
   string account = 1;
@@ -9,7 +12,7 @@ message RegisterRequest {
 }
 
 message RegisterReply {
-  base.Reply reply = 1;
+  Reply reply = 1;
 }
 
 service Account {
