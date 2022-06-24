@@ -16,7 +16,8 @@ url = "2.*"
 log = "0.*"
 fast_log = "1.*"
 rbson = "2.*"
-rbatis = { version = "3.*", default-features = false, features = ["mysql","runtime-tokio-rustls"] }
+rbatis = { version = "3.*", default-features = false, features = ["mysql", "runtime-tokio-rustls"] }
+lazy_static = "1.*"
 
 [build-dependencies]
 tonic-build = "0.*"

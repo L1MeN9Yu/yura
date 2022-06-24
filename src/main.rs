@@ -1,6 +1,10 @@
 mod rpc;
 mod config;
 mod logger;
+mod database;
+
+#[macro_use]
+extern crate rbatis;
 
 use log::info;
 use tonic::transport::Server;
@@ -9,6 +13,8 @@ use tonic::transport::Server;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let configuration = config::load_config()?;
     logger::init_logger(configuration.logs_directory)?;
+
+    database::init_database(configuration.database.url).await?;
 
     let listen_address = configuration.listen_address.parse()?;
 

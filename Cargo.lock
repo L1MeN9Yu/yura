@@ -2446,6 +2446,7 @@ name = "yura"
 version = "0.0.1"
 dependencies = [
  "fast_log",
+ "lazy_static",
  "log",
  "prost",
  "rbatis",

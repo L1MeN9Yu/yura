@@ -1,8 +1,11 @@
 use log::{info};
+use rbatis::rbatis::Rbatis;
 use tonic::{Request, Response, Status};
 use tonic::codegen::InterceptedService;
 use rpc::account_server::{Account, AccountServer};
 use rpc::{Reply, RegisterRequest, RegisterReply};
+use crate::database::database;
+use super::super::database;
 
 pub mod rpc {
     tonic::include_proto!("top.l1men9yu.yura");
@@ -16,12 +19,9 @@ impl Account for RPCCenter {
     async fn register(&self, request: Request<RegisterRequest>) -> Result<Response<RegisterReply>, Status> {
         info!("Got a request: {:?}", request);
 
-        let my_extension: Option<&MyExtension> = request.extensions().get();
-        match my_extension {
-            None => {} Some(my_) => {
-                info!("{:?}",my_.some_piece_of_data);
-            }
-        }
+        let rb = database();
+
+        info!("{:?}",rb);
 
         let register_reply = RegisterReply {
             reply: Some(
@@ -44,14 +44,5 @@ pub fn service() -> InterceptedService<AccountServer<RPCCenter>, fn(Request<()>)
 fn intercept(mut request: Request<()>) -> Result<Request<()>, Status> {
     info!("Intercepting request: {:?}", request);
 
-    request.extensions_mut().insert(MyExtension {
-        some_piece_of_data: "foo".to_string(),
-    });
-
     Ok(request)
-}
-
-#[derive(Debug)]
-struct MyExtension {
-    some_piece_of_data: String,
 }
