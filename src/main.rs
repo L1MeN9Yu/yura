@@ -2,8 +2,7 @@ mod rpc;
 mod config;
 mod logger;
 
-use rpc::RPCCenter;
-use rpc::rpc::account_server::AccountServer;
+use log::info;
 use tonic::transport::Server;
 
 #[tokio::main]
@@ -11,12 +10,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let configuration = config::load_config()?;
     logger::init_logger(configuration.logs_directory)?;
 
-    let addr = configuration.listen_address.parse()?;
-    let rpc_center = RPCCenter::default();
+    let listen_address = configuration.listen_address.parse()?;
+
+    info!("server start {:?}",listen_address);
 
     Server::builder()
-        .add_service(AccountServer::new(rpc_center))
-        .serve(addr)
+        .add_service(rpc::account::service())
+        .serve(listen_address)
         .await?;
 
     Ok(())
