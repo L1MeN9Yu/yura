@@ -1,0 +1,7 @@
+## rename file to config.yml
+listen_address: "ip:port" # 0.0.0.0:8888 etc.
+
+database:
+  url: "mysql://root:password@ip:port/database_name"
+
+logs_directory: "log_path_relative_of_work_directory"

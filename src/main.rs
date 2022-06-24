@@ -1,4 +1,5 @@
 mod rpc;
+mod config;
 
 use rpc::RPCCenter;
 use rpc::rpc::account_server::AccountServer;
@@ -6,7 +7,9 @@ use tonic::transport::Server;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:50051".parse()?;
+    let configuration = config::load_config()?;
+
+    let addr = configuration.listen_address.parse()?;
     let rpc_center = RPCCenter::default();
 
     Server::builder()

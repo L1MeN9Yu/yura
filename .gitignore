@@ -1,4 +1,8 @@
+# cargo
 /target
 
 # Jetbrains
 .idea
+
+# local config file
+work_directory/config.yml
