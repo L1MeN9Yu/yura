@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [
+          ubuntu-18.04,
+          ubuntu-20.04,
+          ubuntu-22.04,
+          macos-10.15,
+          macos-11,
+          macos-12,
+          windows-2019,
+          windows-2022,
+        ]
+        file: [
+          target/release/yura,
+          target/release/yura,
+          target/release/yura,
+          target/release/yura,
+          target/release/yura,
+          target/release/yura,
+          target/release/yura.exe,
+          target/release/yura.exe,
+        ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+      - name: Rename file
+        run: cp ${{ matrix.file }} ${{ matrix.file }}.${{ matrix.os }}
+      - name: Upload Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ matrix.file }}.${{ matrix.os }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
