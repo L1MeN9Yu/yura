@@ -1,7 +1,7 @@
+use crate::config::app_config::Configuration;
 use std::env::VarError;
 use std::fs::File;
-use std::io::{BufReader};
-use crate::config::app_config::{Configuration};
+use std::io::BufReader;
 
 mod app_config;
 

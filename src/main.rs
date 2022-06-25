@@ -1,7 +1,7 @@
-mod rpc;
 mod config;
-mod logger;
 mod database;
+mod logger;
+mod rpc;
 
 #[macro_use]
 extern crate rbatis;
@@ -18,12 +18,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let listen_address = configuration.listen_address.parse()?;
 
-    info!("server start {:?}",listen_address);
+    info!("server start {:?}", listen_address);
 
-    Server::builder()
-        .add_service(rpc::account::service())
-        .serve(listen_address)
-        .await?;
+    Server::builder().add_service(rpc::account::service()).serve(listen_address).await?;
 
     Ok(())
 }
